@@ -26,6 +26,9 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: npm run test:e2e
+        env:
+          NODE_ENV: test
+          TEST_MONGODB_URI: ${{ secrets.MONGODB_URI }}
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
