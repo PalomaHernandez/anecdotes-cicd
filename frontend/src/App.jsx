@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setUser, removeUser } from './reducers/userReducer'
 import { Routes, Route } from 'react-router-dom'
-import UsersList from './components/usersList'
+import UsersList from './components/UsersList'
 import BlogsList from './components/BlogsList'
 import BlogDetails from './components/BlogDetails'
 import { Link } from 'react-router-dom'
@@ -18,7 +18,6 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
-import NavDropdown from 'react-bootstrap/NavDropdown'
 
 const App = () => {
   const dispatch = useDispatch()
