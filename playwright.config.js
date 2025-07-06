@@ -76,6 +76,7 @@ export default defineConfig({
   webServer: {
     command: "cross-env NODE_ENV=test npm --prefix backend run start:test",
     url: "http://localhost:3001",
+    timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
   },
 });
