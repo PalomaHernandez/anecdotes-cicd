@@ -3,7 +3,7 @@
     "build": "npm --prefix frontend run build",
     "prod": "npm --prefix backend run start",
     "lint": "npm --prefix frontend run lint && npm --prefix backend run lint",
-    "test": "cross-env NODE_ENV=test TEST_MONGODB_URI=$TEST_MONGODB_URI npm --prefix backend run start:test",
+    "test": "npm --prefix backend run start:test",
     "test:e2e": "playwright test"
   },
   "private": true,
