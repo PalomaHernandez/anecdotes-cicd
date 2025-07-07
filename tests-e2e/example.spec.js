@@ -14,15 +14,22 @@ describe("Blog app", () => {
     await expect(page.getByRole("button", { name: "Log in" })).toBeVisible();
   });
 
+  test("API alive", async ({ request }) => {
+    const res = await request.get("/api/blogs");
+    console.log("GET /api/blogs", res.status());
+    expect(res.ok()).toBeTruthy();
+  });
+
   describe("Login", () => {
     beforeEach(async ({ page, request }) => {
-      await request.post("/api/users", {
+      const res = await request.post("/api/users", {
         data: {
           name: "Prueba de test",
           username: "Prueba",
           password: "Contraseña",
         },
       });
+      console.log("User creation response", res.status(), await res.text());
     });
     test("succeeds with correct credentials", async ({ page }) => {
       await loginWith(page, "Prueba", "Contraseña");
@@ -47,13 +54,14 @@ describe("Blog app", () => {
       const username = `user-${suffix}`;
       const name = `User ${suffix}`;
       const password = "testpass";
-      await request.post("/api/users", {
+      const res = await request.post("/api/users", {
         data: {
           name: name,
           username: username,
           password: password,
         },
       });
+      console.log("User creation response", res.status(), await res.text());
       await loginWith(page, username, password);
       await expect(page.getByText(`${name} logged in`)).toBeVisible();
     });
