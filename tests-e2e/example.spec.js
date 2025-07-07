@@ -1,5 +1,6 @@
 import { test, expect, describe, beforeEach } from "@playwright/test";
 import { loginWith, createBlog } from "./helper.js";
+import { createTestUser } from "./test-utils.js";
 
 describe("Blog app", () => {
   beforeEach(async ({ page, request }) => {
@@ -15,29 +16,14 @@ describe("Blog app", () => {
   });
 
   describe("Login", () => {
-    let username;
-    let name;
-
-    beforeEach(async ({ page, request }, testInfo) => {
-      const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
-      username = `prueba-${suffix}`;
-      name = `Prueba de test ${suffix}`;
-      const res = await request.post("/api/users", {
-        data: {
-          name: name,
-          username: username,
-          password: "Contraseña",
-        },
-      });
-      console.log("User creation response", res.status(), await res.text());
-    });
-
-    test("succeeds with correct credentials", async ({ page }) => {
-      await loginWith(page, username, "Contraseña");
+    test("succeeds with correct credentials", async ({ page, request }) => {
+      const { username, name, password } = await createTestUser(request);
+      await loginWith(page, username, password);
       await expect(page.getByText(`${name} logged in`)).toBeVisible();
     });
 
-    test("fails with wrong credentials", async ({ page }) => {
+    test("fails with wrong credentials", async ({ page, request }) => {
+      const { username, name } = await createTestUser(request);
       await loginWith(page, username, "Wrong password");
 
       const errorDiv = await page.locator(".notification");
@@ -51,18 +37,7 @@ describe("Blog app", () => {
 
   describe("When logged in", () => {
     beforeEach(async ({ page, request }) => {
-      const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-      const username = `user-${suffix}`;
-      const name = `User ${suffix}`;
-      const password = "testpass";
-      const res = await request.post("/api/users", {
-        data: {
-          name: name,
-          username: username,
-          password: password,
-        },
-      });
-      console.log("User creation response", res.status(), await res.text());
+      const { username, name, password } = await createTestUser(request);
       await loginWith(page, username, password);
       await expect(page.getByText(`${name} logged in`)).toBeVisible();
     });
