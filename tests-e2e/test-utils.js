@@ -8,8 +8,6 @@ const createTestUser = async (request, prefix = "prueba") => {
     data: { name, username, password },
   });
 
-  console.log("User creation response", res.status(), await res.text());
-
   return { username, name, password };
 };
 

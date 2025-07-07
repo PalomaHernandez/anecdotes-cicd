@@ -1,5 +1,4 @@
-const bcrypt =
-  process.env.NODE_ENV === 'test' ? require('bcryptjs') : require('bcrypt');
+const bcrypt = require('bcryptjs');
 const usersRouter = require('express').Router();
 const User = require('../models/user');
 
