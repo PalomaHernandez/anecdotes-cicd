@@ -29,6 +29,7 @@ jobs:
         env:
           NODE_ENV: test
           TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+          SECRET: ${{ secrets.SECRET }}
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
