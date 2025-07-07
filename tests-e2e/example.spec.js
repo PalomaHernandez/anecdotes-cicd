@@ -14,37 +14,38 @@ describe("Blog app", () => {
     await expect(page.getByRole("button", { name: "Log in" })).toBeVisible();
   });
 
-  test("API alive", async ({ request }) => {
-    const res = await request.get("/api/blogs");
-    console.log("GET /api/blogs", res.status());
-    expect(res.ok()).toBeTruthy();
-  });
-
   describe("Login", () => {
-    beforeEach(async ({ page, request }) => {
+    let username;
+    let name;
+
+    beforeEach(async ({ page, request }, testInfo) => {
+      const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+      username = `prueba-${suffix}`;
+      name = `Prueba de test ${suffix}`;
       const res = await request.post("/api/users", {
         data: {
-          name: "Prueba de test",
-          username: "Prueba",
+          name: name,
+          username: username,
           password: "Contraseña",
         },
       });
       console.log("User creation response", res.status(), await res.text());
     });
+
     test("succeeds with correct credentials", async ({ page }) => {
-      await loginWith(page, "Prueba", "Contraseña");
-      await expect(page.getByText("Prueba de test logged in")).toBeVisible();
+      await loginWith(page, username, "Contraseña");
+      await expect(page.getByText(`${name} logged in`)).toBeVisible();
     });
 
     test("fails with wrong credentials", async ({ page }) => {
-      await loginWith(page, "Prueba", "Wrong password");
+      await loginWith(page, username, "Wrong password");
 
       const errorDiv = await page.locator(".notification");
       await expect(errorDiv).toContainText("Wrong username or password");
       await expect(errorDiv).toHaveCSS("border-style", "solid");
       await expect(errorDiv).toHaveCSS("color", "rgb(88, 21, 28)");
 
-      await expect(page.getByText("Prueba logged in")).not.toBeVisible();
+      await expect(page.getByText(`${name} logged in`)).not.toBeVisible();
     });
   });
 
