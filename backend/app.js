@@ -19,14 +19,17 @@ if (process.env.NODE_ENV === 'test') {
 
 mongoose.set('strictQuery', false);
 
+console.log('About to start server...');
 logger.info('connecting to', config.MONGODB_URI);
 mongoose
   .connect(config.MONGODB_URI)
   .then(() => {
     logger.info('connected to MongoDB');
+    console.log('connected to MongoDB...');
   })
   .catch((error) => {
     logger.error('error connecting to MongoDB:', error.message);
+    console.log('error connecting to MongoDB:', error.message);
   });
 
 app.use(cors());
