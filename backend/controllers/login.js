@@ -1,6 +1,8 @@
 const config = require('../utils/config')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcrypt =
+  process.env.NODE_ENV === 'test' ? require('bcryptjs') : require('bcrypt')
+
 const loginRouter = require('express').Router()
 const User = require('../models/user')
 
