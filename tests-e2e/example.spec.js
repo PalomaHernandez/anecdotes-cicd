@@ -6,6 +6,7 @@ describe("Blog app", () => {
   beforeEach(async ({ page, request }) => {
     await page.goto("/");
     await page.evaluate(() => localStorage.clear());
+    await page.goto("/");
   });
 
   test("Login form is shown", async ({ page }) => {
